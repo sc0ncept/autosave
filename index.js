@@ -12,7 +12,24 @@ const getId = function (input) {
   return null;
 }
 
-const inputHandle = function (event) {
+const loadData = function () {
+  const inputs = document.querySelectorAll('#save-me input, #save-me textarea');
+
+  Array.prototype.slice.call(inputs).forEach(function (input) {
+
+    const id = getId(input);
+    if (!id) return;
+
+    const saved = localStorage.getItem(storagePrefix + id);
+    if (!saved) return;
+
+    input.value = saved;
+
+    console.log(input.value);
+  })
+}
+
+const inputHandler = function (event) {
   if (!event.target.closest('#save-me')) return;
 
   const id = getId(event.target);
@@ -22,4 +39,6 @@ const inputHandle = function (event) {
   localStorage.setItem(storagePrefix + id, event.target.value);
 };
 
-document.addEventListener('input', inputHandle, false);
+loadData();
+
+document.addEventListener('input', inputHandler, false);

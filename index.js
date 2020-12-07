@@ -24,9 +24,20 @@ const loadData = function () {
     if (!saved) return;
 
     input.value = saved;
-
-    console.log(input.value);
   })
+}
+
+const clearData = function () {
+  const inputs = document.querySelectorAll('#save-me input, #save-me textarea');
+
+  Array.prototype.slice.call(inputs).forEach(function (input) {
+
+    const id = getId(input);
+    if (!id) return;
+
+    localStorage.removeItem(storagePrefix + id);
+  })
+
 }
 
 const inputHandler = function (event) {
@@ -39,6 +50,14 @@ const inputHandler = function (event) {
   localStorage.setItem(storagePrefix + id, event.target.value);
 };
 
+const submitHandler = function (event) {
+  event.preventDefault();
+
+  if (event.target.id !== 'save-me') return;
+  clearData();
+}
+
 loadData();
 
 document.addEventListener('input', inputHandler, false);
+document.addEventListener('submit', submitHandler, false);
